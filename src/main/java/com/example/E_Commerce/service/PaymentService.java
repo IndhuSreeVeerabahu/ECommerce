@@ -60,9 +60,7 @@ public class PaymentService {
         logger.info("Creating payment session for order ID: {}", order.getId());
         logger.info("Order amount: {} INR", order.getTotalAmount());
         
-        // Use REAL Cashfree sandbox API for college project
         try {
-            // For sandbox testing, limit amount to avoid API limits
             BigDecimal orderAmount = order.getTotalAmount();
             BigDecimal maxSandboxAmount = new BigDecimal("1000.00"); // Max ₹1000 for sandbox
             
@@ -73,7 +71,6 @@ public class PaymentService {
                 return testSessionId;
             }
             
-            // Convert amount to paise (multiply by 100)
             int amountInPaise = orderAmount.multiply(BigDecimal.valueOf(100)).intValue();
             logger.info("Order amount: {} INR ({} paise)", orderAmount, amountInPaise);
             
@@ -129,17 +126,14 @@ public class PaymentService {
             logger.error("Error creating payment session with Cashfree API: {}", e.getMessage());
             logger.error("Stack trace: ", e);
             
-            // Fallback to test session if API fails
-            logger.warn("Cashfree API failed, using test session for college project demonstration");
+            logger.warn("Cashfree API failed, using test session");
             String testSessionId = "test_session_" + order.getId() + "_" + System.currentTimeMillis();
             logger.info("Generated fallback test session ID: {}", testSessionId);
             return testSessionId;
         }
         
         /* 
-        // Real Cashfree integration (commented out for college project)
         try {
-            // Convert amount to paise (multiply by 100)
             int amountInPaise = order.getTotalAmount().multiply(BigDecimal.valueOf(100)).intValue();
             logger.info("Order amount: {} INR ({} paise)", order.getTotalAmount(), amountInPaise);
             
@@ -195,24 +189,20 @@ public class PaymentService {
             logger.error("Error creating payment session: {}", e.getMessage());
             logger.error("Stack trace: ", e);
             
-            // For college project - return a test session ID if API fails
-            logger.warn("Cashfree API failed, using test session for college project demonstration");
+            logger.warn("Cashfree API failed, using test session");
             return "test_session_" + order.getId() + "_" + System.currentTimeMillis();
         }
-        */
     }
 
     public boolean verifyPayment(String orderId, String paymentId) {
         logger.info("Verifying payment for order: {}, payment: {}", orderId, paymentId);
         
-        // Handle test sessions for college project
         if (paymentId != null && (paymentId.startsWith("test_session_") || paymentId.startsWith("test_cashfree_payment_"))) {
-            logger.info("Test session detected, returning true for college project demonstration");
+            logger.info("Test session detected, returning true");
             return true;
         }
         
         try {
-            // Use the payment ID directly to get payment details
             String url = getBaseUrl() + "/payments/" + paymentId;
             HttpEntity<String> request = new HttpEntity<>(createHeaders());
             
@@ -273,11 +263,9 @@ public class PaymentService {
         return cashfreeEnvironment != null ? cashfreeEnvironment : "SANDBOX";
     }
 
-    // Test payment simulation for student projects
     public boolean simulateTestPayment(String orderId, boolean success) {
         logger.info("Simulating test payment for order: {}, success: {}", orderId, success);
         
-        // For student project demonstration
         if (success) {
             logger.info("Test payment simulation: SUCCESS");
             return true;
@@ -287,11 +275,9 @@ public class PaymentService {
         }
     }
 
-    // Webhook signature verification (for production use)
     public boolean verifyWebhookSignature(String payload, String signature) {
         try {
             // In production, you would verify the webhook signature here
-            // For college project, we'll accept all webhooks
             logger.info("Webhook signature verification: {}", signature);
             return true;
         } catch (Exception e) {
@@ -300,7 +286,6 @@ public class PaymentService {
         }
     }
 
-    // Get payment status from Cashfree
     public String getPaymentStatus(String orderId, String paymentId) {
         try {
             String url = getBaseUrl() + "/orders/" + orderId + "/payments";

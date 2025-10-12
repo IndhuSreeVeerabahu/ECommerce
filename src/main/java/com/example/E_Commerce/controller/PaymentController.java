@@ -44,7 +44,6 @@ public class PaymentController {
                 return "redirect:/orders";
             }
             
-            // Create payment session (always returns test session for college project)
             String paymentSessionId = paymentService.createPaymentSession(order);
             logger.info("Payment session created: {}", paymentSessionId);
             
@@ -154,7 +153,6 @@ public class PaymentController {
             logger.warn("Payment callback with missing parameters - order_id: {}, cf_payment_id: {}", actualOrderId, actualPaymentId);
             logger.info("This might be a successful payment with missing callback parameters");
             
-            // For college project, show success message and redirect to orders
             redirectAttributes.addFlashAttribute("success", "Payment completed! Please check your orders for confirmation.");
             return "redirect:/orders";
             
@@ -218,7 +216,6 @@ public class PaymentController {
                 return "redirect:/orders";
             }
             
-            // Simulate failed payment
             orderService.updatePaymentStatus(orderId, PaymentStatus.FAILED);
             
             redirectAttributes.addFlashAttribute("error", "Test payment failed. Please try again.");
@@ -242,7 +239,6 @@ public class PaymentController {
             }
             
             // Parse webhook payload and update order status
-            // This is a simplified version for college project
             // In production, you would parse the JSON and update order status accordingly
             
             return "OK";

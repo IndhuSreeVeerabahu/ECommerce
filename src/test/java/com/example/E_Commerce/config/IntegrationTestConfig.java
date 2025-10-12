@@ -17,6 +17,4 @@ import org.springframework.test.context.TestPropertySource;
 })
 public class IntegrationTestConfig {
     
-    // This configuration class provides test-specific settings
-    // to ensure proper database schema management during tests
 }

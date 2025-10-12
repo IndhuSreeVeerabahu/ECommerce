@@ -91,7 +91,6 @@ public class CheckoutController {
             return "payment";
         } catch (Exception e) {
             logger.error("Error loading payment page for order {}: {}", orderId, e.getMessage(), e);
-            // If Cashfree fails, still show payment page with test option
             try {
                 User user = (User) authentication.getPrincipal();
                 Order order = orderService.getOrderById(orderId);
