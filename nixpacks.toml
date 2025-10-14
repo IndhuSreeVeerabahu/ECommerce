@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["docker"]
+
+[phases.build]
+cmds = ["docker build -t app ."]
+
+[phases.start]
+cmd = "java -Xms512m -Xmx1024m -XX:+UseG1GC -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar"
