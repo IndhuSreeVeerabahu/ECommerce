@@ -1,5 +1,5 @@
 # Multi-stage build for production
-FROM openjdk:17-jdk-slim as builder
+FROM eclipse-temurin:17-jdk-alpine as builder
 
 # Set working directory
 WORKDIR /app
@@ -19,15 +19,15 @@ COPY src src
 RUN ./mvnw clean package -DskipTests
 
 # Production stage
-FROM openjdk:17-jre-slim
+FROM eclipse-temurin:17-jre-alpine
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    bash
 
 # Create application user
-RUN groupadd -r ecommerce && useradd -r -g ecommerce ecommerce
+RUN addgroup -g 1001 ecommerce && adduser -D -u 1001 -G ecommerce ecommerce
 
 # Set working directory
 WORKDIR /app
