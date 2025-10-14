@@ -1,25 +1,20 @@
 # Multi-stage build for production
-FROM eclipse-temurin:17-jdk-alpine as builder
+FROM maven:3.9.6-eclipse-temurin-17-alpine as builder
 
 # Set working directory
 WORKDIR /app
 
 # Copy Maven files
 COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
-
-# Make mvnw executable
-RUN chmod +x ./mvnw
 
 # Download dependencies
-RUN ./mvnw dependency:go-offline -B
+RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src src
 
 # Build the application
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Production stage
 FROM eclipse-temurin:17-jre-alpine
