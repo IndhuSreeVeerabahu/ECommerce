@@ -16,7 +16,7 @@ RUN ./mvnw dependency:go-offline -B
 COPY src src
 
 # Build the application
-RUN ./mvnw clean package -DskipTests -Pprod
+RUN ./mvnw clean package -DskipTests
 
 # Production stage
 FROM openjdk:17-jre-slim

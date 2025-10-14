@@ -131,67 +131,6 @@ public class PaymentService {
             logger.info("Generated fallback test session ID: {}", testSessionId);
             return testSessionId;
         }
-        
-        /* 
-        try {
-            int amountInPaise = order.getTotalAmount().multiply(BigDecimal.valueOf(100)).intValue();
-            logger.info("Order amount: {} INR ({} paise)", order.getTotalAmount(), amountInPaise);
-            
-            // Create order request
-            Map<String, Object> orderRequest = new HashMap<>();
-            orderRequest.put("order_id", order.getOrderNumber());
-            orderRequest.put("order_amount", amountInPaise);
-            orderRequest.put("order_currency", "INR");
-            
-            // Customer details
-            Map<String, Object> customerDetails = new HashMap<>();
-            customerDetails.put("customer_id", order.getUser().getId().toString());
-            customerDetails.put("customer_name", order.getUser().getFirstName() + " " + order.getUser().getLastName());
-            customerDetails.put("customer_email", order.getUser().getEmail());
-            customerDetails.put("customer_phone", order.getUser().getPhoneNumber());
-            orderRequest.put("customer_details", customerDetails);
-            
-            // Order meta
-            Map<String, Object> orderMeta = new HashMap<>();
-            orderMeta.put("return_url", cashfreeReturnUrl != null ? cashfreeReturnUrl : "http://localhost:8081/payment/success");
-            orderMeta.put("notify_url", cashfreeNotifyUrl != null ? cashfreeNotifyUrl : "http://localhost:8081/payment/webhook");
-            orderMeta.put("payment_methods", "cc,dc,nb,upi,paylater");
-            orderRequest.put("order_meta", orderMeta);
-            
-            // Make API call
-            String url = getBaseUrl() + "/orders";
-            HttpEntity<Map<String, Object>> request = new HttpEntity<>(orderRequest, createHeaders());
-            
-            logger.info("Making API call to: {}", url);
-            logger.info("Request payload: {}", objectMapper.writeValueAsString(orderRequest));
-            
-            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-            
-            logger.info("Response status: {}", response.getStatusCode());
-            logger.info("Response body: {}", response.getBody());
-            
-            if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.CREATED) {
-                JsonNode responseJson = objectMapper.readTree(response.getBody());
-                if (responseJson.has("payment_session_id")) {
-                    String paymentSessionId = responseJson.get("payment_session_id").asText();
-                    logger.info("Cashfree payment session created successfully: {}", paymentSessionId);
-                    return paymentSessionId;
-                } else {
-                    logger.error("Payment session ID not found in response: {}", response.getBody());
-                    throw new RuntimeException("Payment session ID not found in response");
-                }
-            } else {
-                logger.error("Failed to create payment session. Status: {}, Body: {}", response.getStatusCode(), response.getBody());
-                throw new RuntimeException("Failed to create payment session: " + response.getStatusCode() + " - " + response.getBody());
-            }
-            
-        } catch (Exception e) {
-            logger.error("Error creating payment session: {}", e.getMessage());
-            logger.error("Stack trace: ", e);
-            
-            logger.warn("Cashfree API failed, using test session");
-            return "test_session_" + order.getId() + "_" + System.currentTimeMillis();
-        }
     }
 
     public boolean verifyPayment(String orderId, String paymentId) {

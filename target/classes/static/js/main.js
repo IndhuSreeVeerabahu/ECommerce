@@ -1,4 +1,3 @@
-// Main JavaScript for E-Commerce Store
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
