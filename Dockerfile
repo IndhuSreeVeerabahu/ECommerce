@@ -1,5 +1,9 @@
-# Multi-stage build for production
+# Multi-stage build for production - FIXED VERSION
 FROM maven:3.9.6-eclipse-temurin-17-alpine as builder
+
+# Force clean build
+ARG BUILD_DATE
+ENV BUILD_DATE=${BUILD_DATE}
 
 # Set working directory
 WORKDIR /app
