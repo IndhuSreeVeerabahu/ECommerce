@@ -187,4 +187,11 @@ public class HomeController {
             return "redirect:/profile";
         }
     }
+
+    // Health check endpoint for Railway
+    @GetMapping("/health")
+    @ResponseBody
+    public String health() {
+        return "OK";
+    }
 }
