@@ -7,7 +7,7 @@ import com.example.E_Commerce.model.Role;
 import com.example.E_Commerce.repository.ProductRepository;
 import com.example.E_Commerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+// import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class DataInitializationService implements CommandLineRunner {
+public class DataInitializationService {
 
     @Autowired
     private ProductRepository productRepository;
@@ -27,11 +27,12 @@ public class DataInitializationService implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
-        initializeUsers();
-        initializeProducts();
-    }
+    // Temporarily disabled CommandLineRunner to fix startup hanging
+    // @Override
+    // public void run(String... args) throws Exception {
+    //     initializeUsers();
+    //     initializeProducts();
+    // }
 
     private void initializeUsers() {
         if (userRepository.count() == 0) {
