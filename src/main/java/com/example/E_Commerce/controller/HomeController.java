@@ -48,11 +48,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/health")
-    @ResponseBody
-    public String health() {
-        return "OK";
-    }
 
     @GetMapping("/home")
     public String homePage(Model model, Authentication authentication) {
