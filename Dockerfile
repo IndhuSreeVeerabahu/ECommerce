@@ -1,60 +1,23 @@
-# Multi-stage build for production - FIXED VERSION
-FROM maven:3.9.6-eclipse-temurin-17-alpine as builder
-
-# Force clean build
-ARG BUILD_DATE
-ENV BUILD_DATE=${BUILD_DATE}
+# Use Maven with OpenJDK 17 as base image (Eclipse Temurin)
+FROM maven:3.9.4-eclipse-temurin-17
 
 # Set working directory
 WORKDIR /app
 
-# Copy Maven files
-COPY pom.xml .
+# Copy pom.xml first for better caching
+COPY pom.xml ./
 
-# Download dependencies
+# Download dependencies (this layer will be cached if pom.xml doesn't change)
 RUN mvn dependency:go-offline -B
 
 # Copy source code
-COPY src src
+COPY src ./src
 
 # Build the application
 RUN mvn clean package -DskipTests
 
-# Production stage
-FROM eclipse-temurin:17-jre-alpine
-
-# Install necessary packages
-RUN apk add --no-cache \
-    curl \
-    bash
-
-# Create application user
-RUN addgroup -g 1001 ecommerce && adduser -D -u 1001 -G ecommerce ecommerce
-
-# Set working directory
-WORKDIR /app
-
-# Copy the built JAR from builder stage
-COPY --from=builder /app/target/E_Commerce-0.0.1-SNAPSHOT.jar app.jar
-
-# Create logs directory
-RUN mkdir -p /var/log/ecommerce && chown -R ecommerce:ecommerce /var/log/ecommerce
-
-# Change ownership of the app directory
-RUN chown -R ecommerce:ecommerce /app
-
-# Switch to non-root user
-USER ecommerce
-
-# Expose port
+# Expose port (Railway will override this with PORT environment variable)
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8080/actuator/health || exit 1
-
-# Set JVM options for production
-ENV JAVA_OPTS="-Xms512m -Xmx1024m -XX:+UseG1GC -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
-
-# Run the application
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
+# Run the application with production profile and PORT environment variable
+CMD ["sh", "-c", "echo 'Starting E-Commerce application on port ${PORT:-8080}' && java -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -Dlogging.level.org.springframework=DEBUG -jar target/E_Commerce-0.0.1-SNAPSHOT.jar"]
