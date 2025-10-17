@@ -29,7 +29,7 @@ public class Product {
     private String name;
     
     @NotBlank(message = "Product description is required")
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 2000)
     private String description;
     
     @NotNull(message = "Price is required")

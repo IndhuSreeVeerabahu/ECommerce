@@ -191,7 +191,7 @@
                         <p class="card-text text-muted" th:text="${product.description}">Product description</p>
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="h5 text-primary mb-0" th:text="'₹' + ${#numbers.formatDecimal(product.price, 1, 2)}">₹0.00</span>
+                                <span class="h5 text-primary mb-0" th:text="'₹' + ${#numbers.formatDecimal(product.price, 0, 2)}">₹0.00</span>
                                 <span class="badge bg-success" th:if="${product.stockQuantity > 0}" th:text="'In Stock'">In Stock</span>
                                 <span class="badge bg-danger" th:if="${product.stockQuantity == 0}">Out of Stock</span>
                             </div>

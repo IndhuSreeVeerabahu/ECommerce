@@ -41,11 +41,11 @@ public class Order {
     private BigDecimal totalAmount;
     
     @NotBlank(message = "Shipping address is required")
-    @Column(name = "shipping_address", columnDefinition = "TEXT")
+    @Column(name = "shipping_address", length = 1000)
     private String shippingAddress;
     
     @NotBlank(message = "Billing address is required")
-    @Column(name = "billing_address", columnDefinition = "TEXT")
+    @Column(name = "billing_address", length = 1000)
     private String billingAddress;
     
     @Column(name = "payment_method")

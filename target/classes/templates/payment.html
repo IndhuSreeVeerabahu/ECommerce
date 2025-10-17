@@ -98,7 +98,7 @@
                         
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-primary btn-lg" id="payButton">
-                                <i class="fas fa-credit-card me-2"></i>Pay ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">0.00</span>
+                                <i class="fas fa-credit-card me-2"></i>Pay ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 0, 2)}">0.00</span>
                             </button>
                             <!-- Test Payment Button - Hidden for production submission -->
                             <!-- <a th:href="@{/payment/test/{orderId}(orderId=${order.id})}" class="btn btn-warning">
@@ -140,14 +140,14 @@
                                 <span th:text="${item.product.name}">Product Name</span>
                                 <small class="text-muted d-block" th:text="'Qty: ' + ${item.quantity}">Qty: 1</small>
                             </div>
-                            <span th:text="'₹' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">₹0.00</span>
+                            <span th:text="'₹' + ${#numbers.formatDecimal(item.subtotal, 0, 2)}">₹0.00</span>
                         </div>
                         
                         <hr>
                         
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <span th:text="'₹' + ${#numbers.formatDecimal(order.totalAmount, 1, 2)}">₹0.00</span>
+                            <span th:text="'₹' + ${#numbers.formatDecimal(order.totalAmount, 0, 2)}">₹0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
@@ -156,7 +156,7 @@
                         <hr>
                         <div class="d-flex justify-content-between">
                             <strong>Total:</strong>
-                            <strong class="text-primary" th:text="'₹' + ${#numbers.formatDecimal(order.totalAmount, 1, 2)}">₹0.00</strong>
+                            <strong class="text-primary" th:text="'₹' + ${#numbers.formatDecimal(order.totalAmount, 0, 2)}">₹0.00</strong>
                         </div>
                     </div>
                 </div>

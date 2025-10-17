@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <span class="text-primary fw-bold" 
-                                              th:text="'₹' + ${#numbers.formatDecimal(item.product.price, 1, 2)}">₹0.00</span>
+                                              th:text="'₹' + ${#numbers.formatDecimal(item.product.price, 0, 2)}">₹0.00</span>
                                     </div>
                                     <div class="col-md-2">
                                         <form th:action="@{/cart/update}" method="post" class="d-inline">
@@ -129,7 +129,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <span class="fw-bold" 
-                                              th:text="'₹' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}">₹0.00</span>
+                                              th:text="'₹' + ${#numbers.formatDecimal(item.subtotal, 0, 2)}">₹0.00</span>
                                     </div>
                                     <div class="col-md-1">
                                         <form th:action="@{/cart/remove}" method="post" class="d-inline">
@@ -167,7 +167,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <span th:text="'₹' + ${#numbers.formatDecimal(cart.totalAmount, 1, 2)}">₹0.00</span>
+                            <span th:text="'₹' + ${#numbers.formatDecimal(cart.totalAmount, 0, 2)}">₹0.00</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
@@ -176,7 +176,7 @@
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary" th:text="'₹' + ${#numbers.formatDecimal(cart.totalAmount, 1, 2)}">₹0.00</strong>
+                            <strong class="text-primary" th:text="'₹' + ${#numbers.formatDecimal(cart.totalAmount, 0, 2)}">₹0.00</strong>
                         </div>
                         
                         <div class="d-grid gap-2">
