@@ -26,4 +26,4 @@ RUN cp target/E_Commerce-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 # Run the application with production profile and PORT environment variable
-CMD ["sh", "-c", "echo 'Starting E-Commerce application on port ${PORT:-8080}' && java -Xms256m -Xmx512m -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -Dlogging.level.org.springframework=WARN -jar app.jar"]
+CMD ["sh", "-c", "echo 'Starting E-Commerce application on port ${PORT:-8080}' && java -Xms256m -Xmx512m -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -Dlogging.level.org.springframework=WARN -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
