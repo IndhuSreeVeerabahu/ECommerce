@@ -16,8 +16,11 @@ COPY src ./src
 # Build the application
 RUN mvn clean package -DskipTests
 
+# List files in target directory for debugging
+RUN ls -la target/
+
 # Expose port (Railway will override this with PORT environment variable)
 EXPOSE 8080
 
 # Run the application with production profile and PORT environment variable
-CMD ["sh", "-c", "echo 'Starting E-Commerce application on port ${PORT:-8080}' && java -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -Dlogging.level.org.springframework=DEBUG -jar target/E_Commerce-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "echo 'Starting E-Commerce application on port ${PORT:-8080}' && ls -la target/ && java -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -Dlogging.level.org.springframework=DEBUG -jar target/E_Commerce-0.0.1-SNAPSHOT.jar"]
