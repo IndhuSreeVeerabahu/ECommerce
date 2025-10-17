@@ -22,23 +22,25 @@ public class DatabaseConfig {
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         
-        // Handle Railway DATABASE_URL format
+        // Handle Railway DATABASE_URL format - it already contains credentials
         String jdbcUrl;
+        
         if (databaseUrl != null && !databaseUrl.isEmpty()) {
             if (databaseUrl.startsWith("postgresql://")) {
                 jdbcUrl = "jdbc:" + databaseUrl;
             } else if (databaseUrl.startsWith("jdbc:postgresql://")) {
                 jdbcUrl = databaseUrl;
             } else {
-                jdbcUrl = "jdbc:postgresql://shuttle.proxy.rlwy.net:38014/railway";
+                // Fallback to hardcoded values
+                jdbcUrl = "jdbc:postgresql://postgres:VnaiMgSgcJHPuQhkzSPmXwOSVxDfNixK@shuttle.proxy.rlwy.net:38014/railway";
             }
         } else {
-            jdbcUrl = "jdbc:postgresql://shuttle.proxy.rlwy.net:38014/railway";
+            // Fallback to hardcoded values
+            jdbcUrl = "jdbc:postgresql://postgres:VnaiMgSgcJHPuQhkzSPmXwOSVxDfNixK@shuttle.proxy.rlwy.net:38014/railway";
         }
         
         config.setJdbcUrl(jdbcUrl);
-        config.setUsername("postgres");
-        config.setPassword("VnaiMgSgcJHPuQhkzSPmXwOSVxDfNixK");
+        // No need to set username/password separately since they're in the URL
         config.setDriverClassName("org.postgresql.Driver");
         
         // Connection pool settings
