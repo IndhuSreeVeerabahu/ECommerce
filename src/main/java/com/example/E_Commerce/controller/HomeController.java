@@ -188,10 +188,4 @@ public class HomeController {
         }
     }
 
-    // Health check endpoint for Railway
-    @GetMapping("/health")
-    @ResponseBody
-    public String health() {
-        return "OK";
-    }
 }
