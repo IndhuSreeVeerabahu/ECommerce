@@ -1,8 +1,11 @@
 [phases.setup]
-nixPkgs = ["docker"]
+nixPkgs = ["maven", "openjdk17"]
+
+[phases.install]
+cmds = ["mvn clean package -DskipTests"]
 
 [phases.build]
-cmds = ["docker build -t app ."]
+cmds = ["echo 'Build completed'"]
 
-[phases.start]
-cmd = "java -Xms512m -Xmx1024m -XX:+UseG1GC -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar"
+[start]
+cmd = "java -Dspring.profiles.active=prod -Dserver.port=${PORT:-8080} -jar target/E_Commerce-0.0.1-SNAPSHOT.jar"
